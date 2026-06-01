@@ -1,8 +1,64 @@
 import React from 'react'
+import { Container, Text, VStack } from "@chakra-ui/react";
+import CompanyList from '../components/CompanyList';
+import EmployeeList from '../components/EmployeeList';
 
 function Admin() {
+
+   
+  
   return (
-    <div>Admin</div>
+    <Container maxW='container.xl' py={4}>
+			<VStack spacing={4}>
+				<Text
+					fontSize={"30"}
+					fontWeight={"bold"}
+          bgGradient="linear(to-r, black, gray.900)"
+          bgClip={"text"}
+					textAlign={"center"}
+				>
+					Companies
+        </Text>
+        
+        <CompanyList></CompanyList>
+
+        <Text
+					fontSize={"30"}
+					fontWeight={"bold"}
+          bgGradient="linear(to-r, black, gray.900)"
+          bgClip={"text"}
+					textAlign={"center"}
+				>
+					Employees
+        </Text>
+        <EmployeeList></EmployeeList>
+
+				{/* <SimpleGrid
+					columns={{
+						base: 1,
+						md: 2,
+						lg: 3,
+					}}
+					spacing={10}
+					w={"full"}
+				>
+					/* {products.map((product) => (
+						<ProductCard key={product._id} product={product} />
+					))} *
+				</SimpleGrid> */}
+
+				{/* {products.length === 0 && (
+					<Text fontSize='xl' textAlign={"center"} fontWeight='bold' color='gray.500'>
+						No products found 😢{" "}
+						<Link to={"/create"}>
+							<Text as='span' color='blue.500' _hover={{ textDecoration: "underline" }}>
+								Create a product
+							</Text>
+						</Link>
+					</Text>
+				)} */}
+			</VStack>
+		</Container>
   )
 }
 

@@ -1,33 +1,33 @@
 import React from 'react'
-import { Box, Container, Heading, Text } from '@chakra-ui/react'
-const CompanyList = () => {
+import { useState, useEffect } from 'react';
+import api from '../api';
+import CompanyCard from '../components/CompanyCard'
+import { Container } from '@chakra-ui/react';
+
+function CompanyList() {
+  const [companies, setCompanies] = useState([])
+      
+          useEffect(() => {
+          getCompanies();
+        }, []);
+      
+          const getCompanies = () => {
+            api.get("/api/companies/")
+                .then((res) => res.data)
+              .then((data) => {
+                          setCompanies(data);
+
+                  console.log(data)
+                }).catch((err) => alert(err));
+  }
+
   return (
-    <Container maxW='container.xl' py={4}>
-      {/* {id && <EmployeeCard id={id}></EmployeeCard>} */}
-        <Box
-                    shadow='lg'
-                    rounded='lg'
-                    overflow='hidden'
-                    transition='all 0.3s'
-                    _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
-                    bg='white'
-                >
-                    {/* <Image src={product.image} alt={product.name} h={48} w='full' objectFit='cover' /> */}
-        
-                    <Box p={4} padding='4'>
-                        <Heading as='h3' size='md' mb={2}>
-                          Name: 
-                        </Heading>
-        
-                        <Text fontWeight='bold' fontSize='xl' color='gray.600' >
-                          About:
-                        </Text>
-                        <Text  fontSize='lg' color='gray.600' >
-                          Industry
-                      </Text>
-                    </Box>
-                </Box>
+    <Container maxW={'100%'} >
+    {companies.map(
+          (company) => (<CompanyCard company={company} key={company.id} />
+    ))}
     </Container>
+
   )
 }
 

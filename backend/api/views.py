@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Note, Company
 from django.contrib.auth.models import Group
-from .permissions import IsAdminUser, IsEmployeeUser, IsHrManagerUser
+from .permissions import IsAdminUser, IsHrManagerUser, IsEmployeeUser, IsAdminOrReadOnlyOther, IsAdminHROrReadOnlyOther
 
 # ----- Me -----
 from rest_framework.response import Response
@@ -34,27 +34,27 @@ class CurrentUserView(APIView):
 
 
 # ----- Groups -----
-def addToHrGroup(request):
-    group = Group.objects.get(name="Hr")
-    request.user.groups.add(group)
-    return 
+# def addToHrGroup(request):
+#     group = Group.objects.get(name="Hr")
+#     request.user.groups.add(group)
+#     return 
 
-def addToEmployeeGroup(request):
-    group = Group.objects.get(name="Employee")
-    request.user.groups.add(group)
-    return 
+# def addToEmployeeGroup(request):
+#     group = Group.objects.get(name="Employee")
+#     request.user.groups.add(group)
+#     return 
 
 
 # ----- Company -----
 class CompanyListCreate(generics.ListCreateAPIView):
     serializer_class = CompanySerializer
-    permission_classes = [IsAuthenticated, IsAdminUser] 
+    permission_classes = [IsAuthenticated, IsAdminUser] # comma means &
     queryset = Company.objects.all()
 
 
 class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CompanySerializer
-    permission_classes = [AllowAny] # add permission group admin
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnlyOther] 
     queryset = Company.objects.all()
 
 # Department
@@ -69,12 +69,21 @@ class DepartmentListCreate(generics.ListCreateAPIView):
 
 class DepartmentDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DepartmentSerializer
-    permission_classes = [AllowAny] # add permission group admin
+    permission_classes = [IsAuthenticated, IsAdminHROrReadOnlyOther] # add permission group admin
     queryset = Department.objects.all()
 
     # def get_queryset(self):
     #     company_id = self.kwargs.get("company_id")
     #     return Department.objects.filter(company_id=company_id)
+
+class DepartmentByCompanyListCreate(generics.ListCreateAPIView):
+    serializer_class = DepartmentSerializer
+    permission_classes = [IsAuthenticated, IsAdminHROrReadOnlyOther]
+    
+    def get_queryset(self):
+        company_id = self.kwargs.get("company_id")
+        return Department.objects.filter(company_id=company_id)
+    
 
 # Employee
 class EmployeeByCIDListCreate(generics.ListCreateAPIView):

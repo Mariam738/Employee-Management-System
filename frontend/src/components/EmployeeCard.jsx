@@ -8,17 +8,17 @@ import { useState, useEffect } from 'react';
 import api from "../api";
 
 
-function EmployeeCard({ id}) {
+function EmployeeCard({employeeData}) {
 
     const [employee, setEmployee] = useState({
         username: '',
         company_name: '',
         department_name: '',
-        title: '',
-        phone: '',
-        address: '',
-        hire_date: '',
-        status: null
+        title: employeeData.title,
+        phone: employeeData.phone,
+        address: employeeData.address,
+        hire_date: employeeData.hire_date,
+        status: employeeData.status
       });
 
     useEffect(() => {
@@ -26,14 +26,11 @@ function EmployeeCard({ id}) {
   }, []);
 
     const getEmployee = () => {
-      let employeeData = null
-      api.get(`/api/employees/${id}/`)
-          .then((res) => res.data)
-          .then((data) => {
-              setEmployee(data);
-              employeeData = data
-              return api.get(`/api/user/${data.user}/`)
-          }).then((userData) => {
+        console.log("here:")
+        console.log(employeeData)
+        console.log(employeeData.user)
+      api.get(`/api/user/${employeeData.user}/`)
+          .then((userData) => {
               setEmployee((prev) => ({ ...prev, username: userData.data.username }));
               return api.get(`/api/companies/${employeeData.company_id}/`)
           }).then((companyData) => { 

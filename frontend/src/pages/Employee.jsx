@@ -6,6 +6,7 @@ import api from '../api';
 
 function Employee() {
     const [id, setId] = useState(null)
+    const [employee, setEmployee] = useState(null)
     
         useEffect(() => {
         getMe();
@@ -17,12 +18,20 @@ function Employee() {
               .then((data) => {
                 console.log(data)
                 setId(data.id)
-              }).catch((err) => alert(err));
+                return api.get(`/api/employees/${data.id}/`);
+              }).then((res) => res.data)
+            .then((employeeData) => {
+              console.log("employeeData")
+      console.log(employeeData);
+      setEmployee(employeeData);
+    })
+            
+            .catch((err) => alert(err));
       }
 
   return (
     		<Container maxW='container.xl' py={4}>
-      {id && <EmployeeCard id={id}></EmployeeCard>}
+      {employee && <EmployeeCard employeeData={employee} ></EmployeeCard>}
       
     </Container>
   
