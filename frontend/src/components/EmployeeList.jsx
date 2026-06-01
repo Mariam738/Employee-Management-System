@@ -22,10 +22,10 @@ function EmployeeList() {
   }
 
   return (
-      <Container maxW={'100%'} >
-          {/* {employees.map(
-          (employee) => (<EmployeeCard employee={employee} key={employee.user} />
-          ))} */}
+      <Container maxW={'100%'}  >
+          {employees && employees.map(
+          (employee) => (<EmployeeCard employeeData={employee} key={employee.user} />
+          ))}
     
     </Container>
 

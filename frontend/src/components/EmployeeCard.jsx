@@ -14,21 +14,25 @@ function EmployeeCard({employeeData}) {
         username: '',
         company_name: '',
         department_name: '',
-        title: employeeData.title,
-        phone: employeeData.phone,
-        address: employeeData.address,
-        hire_date: employeeData.hire_date,
-        status: employeeData.status
+        
+        phone: '',
+        address: '',
+        hire_date: '',
+        status: '',
+        title: ''
       });
 
     useEffect(() => {
-    getEmployee();
-  }, []);
+    if(employeeData) {
+      getEmployee();
+    }
+  }, [employeeData]);
 
     const getEmployee = () => {
         console.log("here:")
         console.log(employeeData)
         console.log(employeeData.user)
+        setEmployee(employeeData)
       api.get(`/api/user/${employeeData.user}/`)
           .then((userData) => {
               setEmployee((prev) => ({ ...prev, username: userData.data.username }));
@@ -45,12 +49,13 @@ function EmployeeCard({employeeData}) {
 
   return (
     <Box
-			shadow='lg'
-			rounded='lg'
-			overflow='hidden'
-			transition='all 0.3s'
-			_hover={{ transform: "translateY(-5px)", shadow: "xl" }}
-			bg='white'
+          shadow='lg'
+          rounded='lg'
+          overflow='hidden'
+          transition='all 0.3s'
+          _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
+          bg='white'
+          mb={ 4}
 		>
 			{/* <Image src={product.image} alt={product.name} h={48} w='full' objectFit='cover' /> */}
 
