@@ -65,6 +65,7 @@ npm run dev
 ### Departments
 * api/departments/ 📩
   * <img width="272" height="400" alt="image" src="https://github.com/user-attachments/assets/93132e70-db83-475c-a55f-e580fe54d9ab" />
+* api/departmentsByCompany/{<int:company_id>}/ 📩
 * api/departments/{<int:pk>}/ 📩📬✏️❌
 ### Employees
 * api/employees/ 📩
